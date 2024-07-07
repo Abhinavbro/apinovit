@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novita Chat App</title>
+</head>
+<body>
+    <h1>Novita Chat App</h1>
+    <div>
+        <textarea id="userInput" rows="4" cols="50"></textarea><br>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <div id="chatbox"></div>
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById('userInput').value;
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userMessage })
+            });
+            const data = await response.json();
+            const chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+            chatbox.innerHTML += `<p><strong>Assistant:</strong> ${data.response}</p>`;
+        }
+    </script>
+</body>
+</html>
